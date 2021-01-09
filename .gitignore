@@ -8,3 +8,6 @@
 
 # Book codes backup .zip
 *.zip
+
+# Ignore 'bin' dir
+*/bin/*
