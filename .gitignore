@@ -1,0 +1,10 @@
+# Object files
+*.o
+
+#Executable files
+*.out
+*.i*86
+*.x86_64
+
+# Book codes backup .zip
+*.zip
