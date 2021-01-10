@@ -11,7 +11,7 @@ Fedora 31 x86_64
 
 Linux kernel: 5.8.18-100
 
-### Programs used
+### Programs
 * C compiler: GCC Red Hat 9.3.1-2
 
 * ASM compiler: NASM 2.14.02
