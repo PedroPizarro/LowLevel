@@ -12,9 +12,9 @@ Fedora 31 x86_64
 Linux kernel: 5.8.18-100
 
 ### Programs used
-<ins> C compiler <\ins>: GCC Red Hat 9.3.1-2
+<u> C compiler <\u>: GCC Red Hat 9.3.1-2
 
-<ins> ASM compiler <\ins>: NASM 2.14.02
+<u> ASM compiler <u>: NASM 2.14.02
 
 <ins> Debugger <\ins>: GDB 8.3.50.20190824-30.fc31
 
