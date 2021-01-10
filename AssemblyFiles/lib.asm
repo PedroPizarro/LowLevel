@@ -1,15 +1,12 @@
 global _start 
 
-section .data
-message: db "Hello, World!", 0
-
 section .text 
 
 ; Função que pega um código de saída e encerra o processo atual
 exit:
     ; O código de saída deve estar no acumulador
     mov rdi, rax       ; passa o código de saída no acumulador para o descritor de saída (RDI)
-    mov rax, 60        ; número da syscall de saída de uma chamada de sistema 
+    mov rax, 60        ; número da syscall de "exit"  
     syscall 
 ;***
 
@@ -37,7 +34,7 @@ print_string:
     push r15
     xor r13,r13
     mov rax, 1
-    mov rdi, 1
+    mov rdi, 1          
 .loop:
     cmp byte[r13 + r15], 0  
     je .end
@@ -53,14 +50,16 @@ print_string:
     call exit 
 ;***
 
-; Função que aceita um caractere diretamente como seu primeiro argumento e exibe-o em stdout
+; Função que aceita um caractere diretamente como argumento e exibe-o em stdout
 print_char:
-
+    mov rax, 1          ; número da syscall de "write"
+    mov rdi, 1          ; descritor (nesse caso indica que vai escrever em "stdout")
+    mov rsi, [r13]      ; onde está o char, nesse caso pega-se o endereço do registrador que está armazenado
+    mov rdx, 1          ; número de bytes que vai ser escrito
 
 ;**
 ;* MAIN
 ;**
 _start:
-    mov r15, message 
-    call print_string
+    
 
