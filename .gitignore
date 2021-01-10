@@ -9,5 +9,8 @@
 # Book codes backup .zip
 *.zip
 
-# Ignore 'bin' dir
+# 'bin' dir
 */bin/*
+
+# Makefile
+**/Makefile

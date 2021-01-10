@@ -1,5 +1,8 @@
 global _start 
 
+section .data
+message:
+
 section .text 
 
 ; Função que pega um código de saída e encerra o processo atual
@@ -52,14 +55,19 @@ print_string:
 
 ; Função que aceita um caractere diretamente como argumento e exibe-o em stdout
 print_char:
+    mov [message], rax
     mov rax, 1          ; número da syscall de "write"
     mov rdi, 1          ; descritor (nesse caso indica que vai escrever em "stdout")
-    mov rsi, [r13]      ; onde está o char, nesse caso pega-se o endereço do registrador que está armazenado
+    mov rsi, message  ; onde está o char, nesse caso pega-se o endereço do registrador que está armazenado
     mov rdx, 1          ; número de bytes que vai ser escrito
+    xor rax, rax
+    call exit 
 
 ;**
 ;* MAIN
 ;**
 _start:
+    mov rax, 0xA
+    call print_char
     
 
