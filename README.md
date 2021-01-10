@@ -8,12 +8,16 @@ The official book GitHub can be found [here](https://github.com/Apress/low-level
 
 ### Operating System
 Fedora 31 x86_64
+
 Linux kernel: 5.8.18-100
 
 ### Programs used
 <ins> C compiler <\ins>: GCC Red Hat 9.3.1-2
+
 <ins> ASM compiler <\ins>: NASM 2.14.02
+
 <ins> Debugger <\ins>: GDB 8.3.50.20190824-30.fc31
+
 <ins> Text editor <\ins>: VSCode 1.52.1
 
 
