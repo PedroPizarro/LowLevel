@@ -52,7 +52,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.asm
 
 clean:
 	@echo "Cleaning up"
-	rm -f *.o  $(LIST)
+	rm -f $(LIST)
 
 
 # cheat-sheet:

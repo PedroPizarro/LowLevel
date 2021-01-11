@@ -11,7 +11,7 @@ Fedora 31 x86_64
 
 Linux kernel: 5.8.18-100
 
-### Programs
+### Programs used
 * __C compiler__: GCC Red Hat 9.3.1-2
 
 * __ASM compiler__: NASM 2.14.02
@@ -21,4 +21,19 @@ Linux kernel: 5.8.18-100
 * __Text editor__: VSCode 1.52.1
 
 * __Make__: GNU MAKE 4.2.1
+
+### Usage 
+
+Compile all the .asm files and create the bin/ and build/ directories.
+```bash     
+    make 
+```
+Compile that specific .asm file 
+```bash 
+    make bin/file_name
+```
+Clean all the binaries 
+```bash
+    make clean 
+```
 
