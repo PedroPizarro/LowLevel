@@ -9,5 +9,6 @@
 # Book codes backup .zip
 *.zip
 
-# 'bin' dir
+# 'bin'and 'build' dir
 */bin/*
+*/build/*
