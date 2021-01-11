@@ -40,13 +40,12 @@ LIST = $(addprefix $(BINS_DIR)/, $(BINS))
 all: $(LIST)
 
 $(BINS_DIR)/%: $(BUILD_DIR)/%.o
-	@echo "Turning it into a executable"
-	chmod u+x $@  
+	@chmod u+x $@  
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.asm
-	mkdir -p bin/ build/            
-	$(AS) -o $@ $(ASFLAGS) $<
-	$(LD) -o $(BINS_DIR)/$* $@
+	@mkdir -p bin/ build/            
+	@$(AS) -o $@ $(ASFLAGS) $<
+	@$(LD) -o $(BINS_DIR)/$* $@
 
 # last target create directories as needed 
 
