@@ -11,7 +11,9 @@
 
 # assembly compiler variable and its flags variables 
 AS = nasm
-ASFLAGS = -f elf64
+ASFLAGS = -f elf64 -gdwarf 
+# -f select "elf64" output format
+# -gdarf generate debugging information in "dwarf" dormat
 
 # linker variable
 LD = ld
