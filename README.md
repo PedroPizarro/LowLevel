@@ -24,15 +24,18 @@ Linux kernel: 5.8.18-100
 
 ### Usage 
 
-Compile all the .asm files and create the bin/ and build/ directories.
+#### Makefile
+
+In the `AssemblyFiles` directory:
+- Compile all the `.asm` files and create the `bin/` and `build/` directories.
 ```bash     
     make 
 ```
-Compile that specific .asm file 
+- Compile that specific `.asm` file 
 ```bash 
     make bin/file_name
 ```
-Clean all the binaries 
+- Clean all the binaries 
 ```bash
     make clean 
 ```
