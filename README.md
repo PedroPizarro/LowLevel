@@ -16,9 +16,9 @@ Linux kernel: 5.8.18-100
 
 * __ASM compiler__: NASM 2.14.02
 
-* __Debugger__: GDB 8.3.50.20190824-30.fc31
+* __Debugger__: GNU GDB 8.3.50.20190824-30.fc31
 
 * __Text editor__: VSCode 1.52.1
 
-
+* __Make__: GNU MAKE 4.2.1
 
