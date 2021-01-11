@@ -1,41 +1,40 @@
-# Usage 
+# usage 
 
-# make bin/file_name: compile that specific .asm file
-# make: compile all .asm files to ./bin directory
-# make clean: remove all possible* objects in . and all executable files in ./bin
+# make bin/file_name  compile that specific .asm file
+# make                compile all .asm files to ./bin directory
+# make clean          remove all possible* objects in . and all executable files in ./bin
 # * as make - by default - remove intermidiate files. See Chained Rules in make documentation.
 
-#*
-#* Variables 
-#*
+#
+# Variables 
+#
 
-# Assembly compiler variable and its flags variables 
+# assembly compiler variable and its flags variables 
 AS = nasm
 ASFLAGS = -f elf64
 
-# Linker variable
+# linker variable
 LD = ld
 
-# All the .asm files at the directory
+# all the .asm files at the directory
 SRC_DIR = src
 SRC = $(wildcard $(SRC_DIR)/*.asm)
 
-# All file names without the extension
+# all file names without the extension
 BINS_DIR = bin
 BINS = $(notdir $(basename $(SRC)))
 
-# All object files
+# all object files
 BUILD_DIR = build
 
-# All executable files to compile
+# all executable files to compile
 LIST = $(addprefix $(BINS_DIR)/, $(BINS))
 
+#
+# Targets 
+#
 
-#*
-#* Targets 
-#*
-
-# Alvos que não representam arquivos
+# targes that do not represent archives
 .PHONY: clean
 
 all: $(LIST)
@@ -45,17 +44,18 @@ $(BINS_DIR)/%: $(BUILD_DIR)/%.o
 	chmod u+x $@  
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.asm
-	@echo "Creating object file"
+	mkdir -p bin/ build/            
 	$(AS) -o $@ $(ASFLAGS) $<
-	@echo "Linking"
 	$(LD) -o $(BINS_DIR)/$* $@
+
+# last target create directories as needed 
 
 clean:
 	@echo "Cleaning up"
 	rm -f *.o  $(LIST)
 
 
-# Cheat-sheet:
+# cheat-sheet:
 #$(wildcard pattern) = expansion to all files that match that "pattern"
 
 #$(notdir ) = takes away the path from the file name
