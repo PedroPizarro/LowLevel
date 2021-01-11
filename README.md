@@ -30,14 +30,15 @@ Linux kernel: 5.8.18-100
 In the `AssemblyFiles` directory:
 - Compile all the `.asm` files and create the `bin/` and `build/` directories.
 ```bash     
-    make 
+    make -s
 ```
 - Compile that specific `.asm` file 
 ```bash 
-    make bin/file_name
+    make bin/file_name -s
 ```
 - Clean all the binaries 
 ```bash
     make clean 
 ```
 
+The `-s` flag hides the commands that are executed. [GNU Make manual](https://www.gnu.org/software/make/manual/make.html).
