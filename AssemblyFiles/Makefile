@@ -67,4 +67,3 @@ clean:
 #$@ = the file name of the target
 #$< = name of the first prerequisite
 #$* = matches the target file name without the extension
-
