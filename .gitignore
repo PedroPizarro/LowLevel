@@ -11,6 +11,3 @@
 
 # 'bin' dir
 */bin/*
-
-# Makefile
-**/Makefile
