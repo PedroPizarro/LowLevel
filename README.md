@@ -1,14 +1,10 @@
-# Personal project to learn low-level programmig
-
----
+# Personal project to learn low-level programmig.
 
 Inspired by the book: [Low-level programming: C, Assembly and program execution on Intel 64 architecture](https://www.apress.com/br/book/9781484224021), by Igor Zhirkov.
 
 The official book GitHub can be found [here](https://github.com/Apress/low-level-programming).
 
 ## Environment
-
----
 
 ### Operating System
 Fedora 31 x86_64
@@ -26,11 +22,10 @@ Linux kernel: 5.8.18-100
 
 * __Make__: GNU MAKE 4.2.1
 
----
 
-### Usage 
+## Usage 
 
-#### Makefile
+### Makefile
 
 In the `AssemblyFiles` directory:
 - Compile all the `.asm` files and create the `bin/` and `build/` directories.
