@@ -9,7 +9,7 @@
 .PHONY: clean
 
 # Assembly compiler variable and its flags variables 
-AS = nasm 
+AS = nasm
 ASFLAGS = -f elf64
 
 # Linker variable
