@@ -53,7 +53,13 @@ print_char:
 ; Exibe o caractere "\n"
 print_newline:
     mov rdi, 0xA
-    
+    jmp print_char         ; sem chamar com "call" -> não guarda na pilha o endereço da próxima instrução
+                           ; menos chance de dar stack overflow 
+
+; Exibe número inteiro de 8 bytes sem sinal, em formato decimal.
+print_uint:
+
+
 ;
 ; MAIN
 ;
