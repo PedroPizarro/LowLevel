@@ -45,7 +45,7 @@ In the `AssemblyFiles` directory:
     make gdb
 ``` 
 
-The `-s` flag hides the commands that are executed. 
+The `-s` flag hides the commands that are executed.  
 [GNU Make manual](https://www.gnu.org/software/make/manual/make.html).
 
 ### GNU GDB
