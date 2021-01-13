@@ -49,3 +49,19 @@ The `-s` flag hides the commands that are executed.
 
 ### GNU GDB
 
+All the layout and initial configuration is done by the commands written in `~/.gdbinit` and `./gdbinit`.  
+Besides that, the basic commands are:
+- Create a break point
+```gdb
+    break address # or b address
+```  
+- Next instruction without diving into function calls
+```gdb
+    next # or n
+```  
+- Nex instruction diving into function calls
+```gdb
+    step # or s
+```
+
+Other useful commands can be found in [GNU GDB documentation](https://www.gnu.org/software/gdb/documentation/).
