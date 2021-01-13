@@ -1,4 +1,4 @@
-# Low-level programmig.
+# Low-level programmig
 
 Personal project to lean low-level coding inspired by the book: [Low-level programming: C, Assembly and program execution on Intel 64 architecture](https://www.apress.com/br/book/9781484224021) - by Igor Zhirkov.  
 The official GitHub of the book can be found [here](https://github.com/Apress/low-level-programming).
