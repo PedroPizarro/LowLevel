@@ -1,8 +1,9 @@
 # Personal project to learn low-level programmig.
 
-Inspired by the book: [Low-level programming: C, Assembly and program execution on Intel 64 architecture](https://www.apress.com/br/book/9781484224021), by Igor Zhirkov.
+Inspired by the book: [Low-level programming: C, Assembly and program execution on Intel 64 architecture](https://www.apress.com/br/book/9781484224021), by Igor Zhirkov.  
+The official GitHub of the book can be found [here](https://github.com/Apress/low-level-programming).
 
-The official book GitHub can be found [here](https://github.com/Apress/low-level-programming).
+Besides these original idea, this project turned into an opportunity to learn more about git, makefile, and GNU GDB.
 
 ## Environment
 
