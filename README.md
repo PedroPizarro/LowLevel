@@ -24,8 +24,8 @@ Linux kernel: 5.8.18-100
 
 ## Usage 
 
-### Makefile
-
+### Makefile  
+#### 1. Assembly
 In the `AssemblyFiles` directory:
 - Compile all the `.asm` files and create the `bin/` and `build/` directories.
 ```bash     
@@ -46,6 +46,10 @@ In the `AssemblyFiles` directory:
 
 The `-s` flag hides the commands that are executed.  
 [GNU Make manual](https://www.gnu.org/software/make/manual/make.html).
+
+#### 2. C
+In the `CFiles` directory:
+
 
 ### GNU GDB
 
