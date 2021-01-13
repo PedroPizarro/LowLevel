@@ -55,9 +55,13 @@ In the `CFiles` directory:
 
 All the layout and initial configuration is done by the commands written in `~/.gdbinit` and `./gdbinit`.  
 Besides that, the basic commands are:
+- Load the file to debug
+```gdb
+    gdb file_name
+```
 - Create a break point
 ```gdb
-    break #or b address
+    break #or b address_or_function_name
 ```  
 - Next instruction without diving into function calls
 ```gdb
