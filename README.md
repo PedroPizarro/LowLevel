@@ -53,15 +53,15 @@ All the layout and initial configuration is done by the commands written in `~/.
 Besides that, the basic commands are:
 - Create a break point
 ```gdb
-    break address # or b address
+    break address #or b address
 ```  
 - Next instruction without diving into function calls
 ```gdb
-    next # or n
+    next #or n
 ```  
 - Nex instruction diving into function calls
 ```gdb
-    step # or s
+    step #or s
 ```
 
 Other useful commands can be found in [GNU GDB documentation](https://www.gnu.org/software/gdb/documentation/).
