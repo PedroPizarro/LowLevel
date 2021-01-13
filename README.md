@@ -1,9 +1,9 @@
-# Personal project to learn low-level programmig.
+# Low-level programmig.
 
-Inspired by the book: [Low-level programming: C, Assembly and program execution on Intel 64 architecture](https://www.apress.com/br/book/9781484224021), by Igor Zhirkov.  
+Personal project to lean low-level coding inspired by the book: [Low-level programming: C, Assembly and program execution on Intel 64 architecture](https://www.apress.com/br/book/9781484224021) - by Igor Zhirkov.  
 The official GitHub of the book can be found [here](https://github.com/Apress/low-level-programming).
 
-Besides these original idea, this project turned into an opportunity to learn more about git, makefile, and GNU GDB.
+Besides these original idea, this project turned into an opportunity to learn more about git, makefile, GNU GDB, GNU GCC and OS principles.
 
 ## Environment
 
@@ -18,8 +18,6 @@ Linux kernel: 5.8.18-100
 * __ASM compiler__: NASM 2.14.02
 
 * __Debugger__: GNU GDB 8.3.50.20190824-30.fc31
-
-* __Text editor__: VSCode 1.52.1
 
 * __Make__: GNU MAKE 4.2.1
 
