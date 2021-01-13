@@ -53,7 +53,7 @@ All the layout and initial configuration is done by the commands written in `~/.
 Besides that, the basic commands are:
 - Create a break point
 ```gdb
-    break address #or b address
+    break #or b address
 ```  
 - Next instruction without diving into function calls
 ```gdb
