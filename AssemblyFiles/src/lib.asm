@@ -3,6 +3,7 @@ global _start
 ; dados para testes
 section .data 
 message: db "hello, world", 10, 0
+number: dq 1
 
 section .text 
 
@@ -33,7 +34,7 @@ print_string:
     ; O ponteiro previamente alocado em "rdi"
     push rdi               ; salva o endereço da mensagem na pilha
     call string_length
-    pop rsi                ; pega o endereço salvo por "rdi" na pilha
+    pop rsi                ; pega o endereço salvo por "rdi" na pilha e salva em "rsi"
     mov rdx, rax           ; o número de bytes que deve ser escrito (tamanho da string)
     mov rax, 1             ; número da syscall "write"
     mov rdi, 1             ; descritor de stdout (terminal)
@@ -44,7 +45,7 @@ print_string:
 ; Função que aceita um caractere diretamente como argumento e exibe-o em stdout
 print_char:
     push rdi               ; poe o código do caracter na pilha
-    mov rsi, rsp           ; passa o endereço do código do caracter para rsi
+    mov rdi, rsp           ; passa o endereço do código do caracter para rdi
     call print_string
     pop rdi                ; retorna o código do caracter para rdi (boa prática!) 
     ret
@@ -58,12 +59,41 @@ print_newline:
 
 ; Exibe número inteiro de 8 bytes sem sinal, em formato decimal.
 print_uint:
+    mov rax, rdi           ; pega o valor uint de "rdi"
+    mov rdi, rsp           ; salva o stack pointer em "rdi"
+    push 0                 ; zera 8 células da stack 
+    sub rsp, 16            ; "rsp" ignora 16 células -> stack alignment convention antes de chamadas de funções
+                           ; servem para o armazenamento de uint
+    ; poderia pular somente 14 bytes que daria certo também
+    dec rdi                ; decrementa 1 de rdi -> contém o endereço da pimeira célula do "push 0"
+    mov r8, 10             ; salva 10 no registrador para as divisões 
 
+ .loop:
+    xor rdx, rdx           ; zera "rdx"
+    div r8                 ; quociente da divisão-> "rax"; resto da divisão -> "rdx"
+                           ; como o resto sempre é < 10 -> somente o LSByte de "rdx" é usado ("dl")
+    or  dl, 0x30           ; passa o resto da divisão para ASCII                
+    dec rdi                ; mexendo com a stack: o comando "PUSH" primeiro decrementa o "rsp" e depois carrega, ou seja, 
+                           ; deve-se seguir essa convenção também
+    mov [rdi], dl          ;
+    test rax, rax          ; verifica se é zero -> chegou no MSB?
+    jnz .loop              ; enquanto não chegou, loop
+   
+    call print_string
+    
+    add rsp, 24            ; retorna "rsp" para o endereço de retorno da chamada de "print_uint"
+    ; esse valor depende do quanto que foi pulado:
+    ; push 0 -> 8 bytes pulados
+    ; sub rsp, 16 -> 16
+    ; 8+16 = 24 bytes pulados
+    ret
 
 ;
 ; MAIN
 ;
 _start:
+    mov rdi, 0xFFFFFFFFFFFFFFFF
+    call print_uint
     mov rax, 0
     call exit 
     
