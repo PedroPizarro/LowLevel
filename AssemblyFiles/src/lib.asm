@@ -1,9 +1,9 @@
 global _start 
 
 ; dados para testes
-section .data 
-message: db "hello, world", 10, 0
-number: dq 1
+;section .data 
+;message: db "hello, world", 10, 0
+;number: dq 1
 
 section .text 
 
@@ -61,7 +61,7 @@ print_newline:
 print_uint:
     mov rax, rdi           ; pega o valor uint de "rdi"
     mov rdi, rsp           ; salva o stack pointer em "rdi"
-    push 0                 ; zera 8 células da stack 
+    push 0                 ; zera 8 células da stack (garante o caracter nulo para sinalizar o fim do número) 
     sub rsp, 16            ; "rsp" ignora 16 células -> stack alignment convention antes de chamadas de funções
                            ; servem para o armazenamento de uint
     ; poderia pular somente 14 bytes que daria certo também
@@ -86,14 +86,25 @@ print_uint:
     ; push 0 -> 8 bytes pulados
     ; sub rsp, 16 -> 16
     ; 8+16 = 24 bytes pulados
-    ret
+    ret    
+
+; Exibe número inteiro de 8 bytes com sinal
+print_int:
+    test rdi, rdi          ; verifica se é um inteiro com sinal
+    ; test além de verificar se o número é igual,
+    ; também seta a flag de sinal SF, caso for um inteiro 
+    jns print_uint         ; caso SF=0, significa que é um inteiro sem sinal
+    push rdi               ; salva o número na pilha 
+    mov rdi, '-'           ; move o caracter de menos para o registrador
+    call print_char        ; printa o caracter de menos
+    pop rdi                ; pega o inteiro da pilha
+    neg rdi                ; transforma o inteiro em uint
+    jmp print_uint 
 
 ;
 ; MAIN
 ;
 _start:
-    mov rdi, 0xFFFFFFFFFFFFFFFF
-    call print_uint
     mov rax, 0
     call exit 
     
