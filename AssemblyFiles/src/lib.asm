@@ -101,10 +101,26 @@ print_int:
     neg rdi                ; transforma o inteiro em uint
     jmp print_uint 
 
+; Lê um caractere de stdin e o devolve em "rax"
+read_char:  
+    push 0                 ; apesar de somenter ler 1 byte, zera 8 bytes da stack
+    ; para poder se assegurar que não 'popar' lixo para "rax"
+    xor rax, rax           ; número da syscall "read"
+    xor rdi, rdi           ; descritor de "stdin" = 0
+    mov rsi, rsp           ; pega o endereço do "stack pointer" para armazenar o caracter
+    mov rdx, 1             ; somente um byte vai ser lido (um caractere)
+    syscall                ; essa syscall por padrão retorna em "rax" o valor de bytes lidos
+    ; nesse caso, sempre 1, e como não nos interessa isso, sobrecreve-se "rax" com o valor lido, em 113.
+    pop rax                ; pega o caractere lido na "stack"
+    ret 
+
+read_word:
+
 ;
 ; MAIN
 ;
 _start:
+    call read_char
     mov rax, 0
     call exit 
     
