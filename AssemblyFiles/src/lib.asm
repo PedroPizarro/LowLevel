@@ -1,9 +1,10 @@
 global _start 
-; Basics about conventions:
+; Basics about registers conventions:
 
 ; Callee-save:
 ; rbx, rbp, rsp, r12-r15
 ; Therefore they must be saved by the function called and restored after; all whitin the function
+; -> use 'push' command to save
 
 ; Caller-saved: 
 ; all the other registers
