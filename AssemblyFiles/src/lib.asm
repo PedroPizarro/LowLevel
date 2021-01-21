@@ -201,6 +201,14 @@ read_word:
     pop r14
     ret
 
+parse_uint:
+
+parse_int:
+
+string_equals:
+
+string_copy:
+
 ;
 ; MAIN
 ;
