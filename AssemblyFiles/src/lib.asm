@@ -1,23 +1,33 @@
 global _start 
+; Basics about conventions:
 
-; dados para testes
-;section .data 
-;message: db "hello, world", 10, 0
-;number: dq 1
+; Callee-save:
+; rbx, rbp, rsp, r12-r15
+; Therefore they must be saved by the function called and restored after; all whitin the function
+
+; Caller-saved: 
+; all the other registers
+; Therefore they must be saved before the function call and restored after the function call; all outside the function
+; -> use 'push' command to save before the function call
+
+; So: if you don't save the caller-saved registers before a function call, your info can be lost after that function is executed
+
+section .data                          ; data for test
+message:     db "hello, world", 10, 0
+word_buffer: times 20 db 0xca          ; 'times' directive repeats the command 'n' times. 'times n command' 
 
 section .text 
-
-; Função que pega um código de saída e encerra o processo atual
+; Takes one exit code and finish the current process
 exit:
-    ; O código de saída deve estar no acumulador
-    mov rdi, rax       ; passa o código de saída no acumulador para o descritor de saída (RDI)
-    mov rax, 60        ; número da syscall "exit"  
+    ; rax: exit code
+    mov rdi, rax           ; pass the exit code to 'rdi'
+    mov rax, 60            ; syscall "exit" number loaded to 'rax'  
     syscall 
 ;***
 
 ; Função que aceita um ponteiro para a string e devolve seu tamanho
 string_length:
-    ; O ponteiro previamente alocado em "rdi"
+    ; rdi: address pointer
     xor rax, rax
 .loop:
     cmp byte[rdi + rax], 0 ; confirma se não chegou no finalizador nulo
@@ -31,7 +41,7 @@ string_length:
 
 ; Função que aceita um ponteiro de string com terminação nula e exibe-a em stdout
 print_string: 
-    ; O ponteiro previamente alocado em "rdi"
+    ; rdi: address pointer
     push rdi               ; salva o endereço da mensagem na pilha
     call string_length
     pop rsi                ; pega o endereço salvo por "rdi" na pilha e salva em "rsi"
@@ -104,7 +114,7 @@ print_int:
 ; Lê um caractere de stdin e o devolve em "rax"
 read_char:  
     push 0                 ; apesar de somenter ler 1 byte, zera 8 bytes da stack
-    ; para poder se assegurar que não 'popar' lixo para "rax"
+    ; para poder se assegurar que não vai 'popar' lixo para "rax"
     xor rax, rax           ; número da syscall "read"
     xor rdi, rdi           ; descritor de "stdin" = 0
     mov rsi, rsp           ; pega o endereço do "stack pointer" para armazenar o caracter
@@ -114,13 +124,86 @@ read_char:
     pop rax                ; pega o caractere lido na "stack"
     ret 
 
-read_word:
+; 
+read_word:          
+    ; rdi: buffer address
+    ; rsi: buffer size
+    push r14               ; saves the callee-saved registers that will be used
+    push r15                             
+    xor r14, r14           ; reset the char count
+    mov r15, rsi           ;
+    dec r15                 
+    ; r14: counts the chars that have been saved in buffer
+    ; r15: buffer size minus one ( size(word + NULL char) <= size(buffer) )
+
+    .A:
+    push rdi               ; saves caller-saved register thar will be used later  
+    call read_char
+    pop rdi
+    ; the 'cmp' commands verifies the blank spaces
+    ; ignores all the blank spaces control chars that comes before the word
+    ; as 'read_char' returns the char in 'rax' -> the char will be in 'al'
+    cmp al, ' '            ; SPACE char (32)
+    je .A 
+    cmp al, 10             ; NEW LINE char 
+    je .A
+    cmp al, 13             ; CARRIAGE RETURN char 
+    ; Sometimes used together with other control char to identify the end of a paragraph or line 
+    je .A 
+    cmp al, 9              ; HORIZONTAL TAB char
+    je .A
+
+    test al, al            ; verifies the NULL char
+    jz .C
+
+    .B:
+    mov byte [rdi + r14], al ; saves the word char in buffer
+    inc r14                  ; increments the char count
+
+    push rdi
+    call read_char
+    pop rdi
+    ; if there is a blank space after the first char, the word reading is interrupt 
+    ; and the NULL char is inserted at the end of the word
+    cmp al, ' '
+    je .C
+    cmp al, 10
+    je .C
+    cmp al, 13
+    je .C 
+    cmp al, 9
+    je .C
+    test al, al
+    jz .C
+    cmp r14, r15
+    ; if 'rsi' is set equal to before the function call
+    ; the function will not be able to verify if the char count => buffer memory
+    je .D                  ; verifies if the word size is equal or greater than the buffer space
+    ; if size(word) >= size(buffer) -> returns 0. 
+
+    jmp .B
+
+    .C:
+    ; alocate the NULL char to the end of the word and returns the buffer address
+    mov byte [rdi + r14], 0 
+    mov rax, rdi 
+   
+    mov rdx, r14 
+    pop r15
+    pop r14
+    ret
+
+    .D:
+    ; returns 0
+    xor rax, rax
+    pop r15
+    pop r14
+    ret
 
 ;
 ; MAIN
 ;
 _start:
-    call read_char
     mov rax, 0
     call exit 
     
