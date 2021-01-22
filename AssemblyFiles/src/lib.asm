@@ -16,6 +16,7 @@ global _start
 section .data                          ; data for test
 message:     db "hello, world", 10, 0
 word_buffer: times 20 db 0xca          ; 'times' directive repeats the command 'n' times. 'times n command' 
+input: db "123456", 0
 
 section .text 
 ; Takes one exit code and finish the current process
@@ -125,7 +126,9 @@ read_char:
     pop rax                ; pega o caractere lido na "stack"
     ret 
 
-; 
+; Pega um endereço do buffer e seu tamanho. Lê a próxima palavra de 'stdin' pulando espaços em branco
+; Caso a palavra for muito grande para o buffer [size(word) => size(buffer), visto que precisa do caractere nulo]
+; retorna 0. Caso contrário, devolve o endereço do buffer.
 read_word:          
     ; rdi: buffer address
     ; rsi: buffer size
@@ -201,7 +204,31 @@ read_word:
     pop r14
     ret
 
+; Pega uma string que começa com números e devolve: a quantidade de números encontrados 
+; antes de outro tipo de caractere; e o total de números contados
 parse_uint:
+    mov r8, 10
+    xor rax, rax
+    xor rcx, rcx           ; counts the string length
+.loop:
+    movzx r9, byte [rdi + rcx] 
+    ; move with zero-extend
+    ; move the byte pointed by 'rdi+rcx' to the a 64 bit 'r9' register, zero extending it
+    ; ex: if the byte lodaded is 0xEE the sign bit is 1, because MSB is one: *1*110 1110
+    ; however, when moved to r9, the register will hold: 0x00000000000000EE
+    cmp r9b, '0'
+    jb .end                ; jump if the uint number is bellow the other one (Carry Flag = 1) | (r9b < 0) 
+    cmp r9b, '9'
+    ja .end                ; jump if the uint number is above the other one (CF = 0 and Zero Flag = 0) | (r9b > 0)
+    xor rdx, rdx           ;
+    mul r8                 ; RDX:RAX <- RAX*r8 (will be stored in the register pair depending on the operand size)
+    and r9b, 0x0f          ; leaves only the LSB of R9 
+    add rax, r9            ;
+    inc rcx                ; increments the rcx to indicates that one char have been read
+    jmp .loop 
+    .end:
+    mov rdx, rcx
+    ret
 
 parse_int:
 
@@ -213,6 +240,14 @@ string_copy:
 ; MAIN
 ;
 _start:
+    mov rdi, input
+    call parse_uint
+    mov rdi, rax
+    push rdx
+    call print_uint
+    call print_newline
+    pop rdi
+    call print_uint
     mov rax, 0
     call exit 
     
