@@ -16,7 +16,7 @@ global _start
 section .data                          ; data for test
 message:     db "hello, world", 10, 0
 word_buffer: times 20 db 0xca          ; 'times' directive repeats the command 'n' times. 'times n command' 
-input: db "123456", 0
+input: db "1234596", 0
 
 section .text 
 ; Takes one exit code and finish the current process
@@ -209,7 +209,7 @@ read_word:
 parse_uint:
     mov r8, 10
     xor rax, rax
-    xor rcx, rcx           ; counts the string length
+    xor rcx, rcx                     
 .loop:
     movzx r9, byte [rdi + rcx] 
     ; move with zero-extend
@@ -220,7 +220,6 @@ parse_uint:
     jb .end                ; jump if the uint number is bellow the other one (Carry Flag = 1) | (r9b < 0) 
     cmp r9b, '9'
     ja .end                ; jump if the uint number is above the other one (CF = 0 and Zero Flag = 0) | (r9b > 0)
-    xor rdx, rdx           ;
     mul r8                 ; RDX:RAX <- RAX*r8 (will be stored in the register pair depending on the operand size)
     and r9b, 0x0f          ; leaves only the LSB of R9 
     add rax, r9            ;
@@ -231,6 +230,22 @@ parse_uint:
     ret
 
 parse_int:
+    mov al, byte [rdi]
+    cmp al, "-"            ; test if the firststring char is a "-" sign
+    je .signed
+    jmp parse_uint         ; if there isn't a sign, jumps to "parse_uint"
+.signed:
+    inc rdi 
+    call parse_uint
+    neg rax                ; change the uint number to the sign number that it was
+    test rdx, rdx          ; prevents strings like: "-(something not a number)" -> in that case
+    ; 'parse_uint' would return rdx = 0
+    jz .error
+    inc rdx                ; increments 'rdx' to take the sign into the char account 
+    ret
+    .error:
+    xor rax, rax
+    ret
 
 string_equals:
 
@@ -240,14 +255,6 @@ string_copy:
 ; MAIN
 ;
 _start:
-    mov rdi, input
-    call parse_uint
-    mov rdi, rax
-    push rdx
-    call print_uint
-    call print_newline
-    pop rdi
-    call print_uint
     mov rax, 0
     call exit 
     
