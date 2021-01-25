@@ -47,6 +47,8 @@ In the `AssemblyFiles` directory:
 The `-s` flag hides the commands that are executed.  
 [GNU Make manual](https://www.gnu.org/software/make/manual/make.html).
 
+---
+
 #### 2. C language
 In the `CFiles` directory:
 
