@@ -13,15 +13,17 @@ global _start
 
 ; So: if you don't save the caller-saved registers before a function call, your info can be lost after that function is executed
 
-section .data                          ; data for test
-message:     db "hello, world", 10, 0
-word_buffer: times 20 db 0xca          ; 'times' directive repeats the command 'n' times. 'times n command' 
-input: db "1234596", 0
+;section .data                          ; data for test
+;message:     db "hello, world", 10, 0
+;word_buffer: times 20 db 0xca          ; 'times' directive repeats the command 'n' times. 'times n command' 
+;input: db "1234596", 0
 
 section .text 
 ; Takes one exit code and finish the current process
 exit:
-    ; rax: exit code
+; Arguments:
+; rax: exit code
+; Returns: none
     mov rdi, rax           ; pass the exit code to 'rdi'
     mov rax, 60            ; syscall "exit" number loaded to 'rax'  
     syscall 
@@ -29,7 +31,10 @@ exit:
 
 ; Função que aceita um ponteiro para a string e devolve seu tamanho
 string_length:
-    ; rdi: address pointer
+; Arguments:
+; rdi: string pointer
+; Returns:
+; rax = string size
     xor rax, rax
 .loop:
     cmp byte[rdi + rax], 0 ; confirma se não chegou no finalizador nulo
@@ -43,7 +48,9 @@ string_length:
 
 ; Função que aceita um ponteiro de string com terminação nula e exibe-a em stdout
 print_string: 
-    ; rdi: address pointer
+; Arguments:
+; rdi: string pointer
+; Returns: none
     push rdi               ; salva o endereço da mensagem na pilha
     call string_length
     pop rsi                ; pega o endereço salvo por "rdi" na pilha e salva em "rsi"
@@ -56,6 +63,9 @@ print_string:
 
 ; Função que aceita um caractere diretamente como argumento e exibe-o em stdout
 print_char:
+; Arguments:
+; rdi: char 
+; Returns: none
     push rdi               ; poe o código do caracter na pilha
     mov rdi, rsp           ; passa o endereço do código do caracter para rdi
     call print_string
@@ -65,12 +75,16 @@ print_char:
 
 ; Exibe o caractere "\n"
 print_newline:
+; No arguments neither returns
     mov rdi, 0xA
     jmp print_char         ; sem chamar com "call" -> não guarda na pilha o endereço da próxima instrução
                            ; menos chance de dar stack overflow 
 
 ; Exibe número inteiro de 8 bytes sem sinal, em formato decimal.
 print_uint:
+; Arguments:
+; rdi: uint number
+; Returns: none
     mov rax, rdi           ; pega o valor uint de "rdi"
     mov rdi, rsp           ; salva o stack pointer em "rdi"
     push 0                 ; zera 8 células da stack (garante o caracter nulo para sinalizar o fim do número) 
@@ -102,6 +116,9 @@ print_uint:
 
 ; Exibe número inteiro de 8 bytes com sinal
 print_int:
+; Arguments:
+; rdi: uint or int number
+; Returns: none
     test rdi, rdi          ; verifica se é um inteiro com sinal
     ; test além de verificar se o número é igual,
     ; também seta a flag de sinal SF, caso for um inteiro 
@@ -114,7 +131,10 @@ print_int:
     jmp print_uint 
 
 ; Lê um caractere de stdin e o devolve em "rax"
-read_char:  
+read_char: 
+; Arguments: none 
+; Returns:
+; rax = char from 'stdin'
     push 0                 ; apesar de somenter ler 1 byte, zera 8 bytes da stack
     ; para poder se assegurar que não vai 'popar' lixo para "rax"
     xor rax, rax           ; número da syscall "read"
@@ -126,12 +146,13 @@ read_char:
     pop rax                ; pega o caractere lido na "stack"
     ret 
 
-; Pega um endereço do buffer e seu tamanho. Lê a próxima palavra de 'stdin' pulando espaços em branco
-; Caso a palavra for muito grande para o buffer [size(word) => size(buffer), visto que precisa do caractere nulo]
-; retorna 0. Caso contrário, devolve o endereço do buffer.
-read_word:          
-    ; rdi: buffer address
-    ; rsi: buffer size
+read_word:     
+; Arguments:     
+; rdi: buffer address
+; rsi: buffer size
+; Returns:
+; rax = 0 if the word is too big for the buffer
+; rax = buffer address otherwise
     push r14               ; saves the callee-saved registers that will be used
     push r15                             
     xor r14, r14           ; reset the char count
@@ -188,7 +209,7 @@ read_word:
     jmp .B
 
     .C:
-    ; alocate the NULL char to the end of the word and returns the buffer address
+    ; alocate the NULL char to the end of the word and returns the buffer address in 'rax'
     mov byte [rdi + r14], 0 
     mov rax, rdi 
    
@@ -198,7 +219,7 @@ read_word:
     ret
 
     .D:
-    ; returns 0
+    ; returns 0 in 'rax'
     xor rax, rax
     pop r15
     pop r14
@@ -207,6 +228,11 @@ read_word:
 ; Pega uma string que começa com números e devolve: a quantidade de números encontrados 
 ; antes de outro tipo de caractere; e o total de números contados
 parse_uint:
+; Arguments:
+; rdi: string address
+; Returns:
+; rax = number identified by the parse
+; rdx = char count 
     mov r8, 10
     xor rax, rax
     xor rcx, rcx                     
@@ -230,6 +256,11 @@ parse_uint:
     ret
 
 parse_int:
+; Arguments:
+; rdi: string address
+; Returns:
+; rax = number identified by the parse
+; rdx = char count (including the sign char, if there is)
     mov al, byte [rdi]
     cmp al, "-"            ; test if the firststring char is a "-" sign
     je .signed
@@ -248,9 +279,58 @@ parse_int:
     ret
 
 string_equals:
+; Arguments:
+; rdi: string 1 address
+; rsi: string 2 address
+; Returns:
+; rax = 1 if they are equal
+; rax = 0 otherwise 
+    mov al, byte [rdi]     ;compares char-by-char
+    cmp al, byte [rsi]
+    jne .not_equal         ; if they are equal, increments the pointers address 
+    inc rdi                
+    inc rsi
+    test al, al            ; checks if the NULL char have been reached
+    jnz string_equals      ; if not, jump to the function again
+    mov rax, 1             
+    ret
+    .not_equal:            ; return zero if the strings are not equal
+    xor rax, rax
+    ret 
 
 string_copy:
+; Arguments:
+; rdi: string address
+; rsi: buffer addres
+; rdx: buffer size
+; Returns:
+; rax = buffer address if everything is ok
+; rax = 0 if there is a error
+    push rdi               ; saves all the caler-saved registers
+    push rsi
+    push rdx
+    call string_length
+    pop rdx
+    pop rsi
+    pop rdi
 
+    cmp rax, rdx           ; verifies if the buffer size is greater or equal to the string size
+    jb  .no_space          ; if size(buffer) < size(string), return 0 
+    push rsi               ; saves the buffer address
+
+    .copy_loop:
+    mov al, byte [rdi]
+    mov byte [rsi], al
+    inc rsi
+    inc rdi
+    test al, al            ; checks if the NULL char have been reached
+    jnz .copy_loop         ; if not, loop
+
+    pop rax                ; returns the buffer address previously saved in the stack
+    ret
+    .no_space:
+    xor rax, rax
+    ret
 ;
 ; MAIN
 ;
