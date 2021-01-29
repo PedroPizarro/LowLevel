@@ -74,3 +74,8 @@ Besides that, the basic commands are:
 ```
 
 Other useful commands can be found in [GNU GDB documentation](https://www.gnu.org/software/gdb/documentation/).
+
+
+## License 
+
+None
