@@ -43,7 +43,7 @@ mov rdi, fname
 mov rsi, O_RDONLY    ; Open file read only
 mov rdx, 0 	     ; We are not creating a file
                      ; so this argument has no meaning
-syscall
+syscall              ; test
 
 ; mmap
 mov r8, rax           ; rax holds opened file descriptor
