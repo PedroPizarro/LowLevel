@@ -13,9 +13,9 @@ Besides these original idea, this project turned into an opportunity to learn mo
 ## Environment
 
 ### Operating System
-Fedora 31 x86_64
+- Fedora 31 x86_64
 
-Linux kernel: 5.8.18-100
+- Linux kernel: 5.8.18-100
 
 ### Programs used
 * __C compiler__: GCC Red Hat 9.3.1-2
