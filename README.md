@@ -5,6 +5,11 @@ The official GitHub of the book can be found [here](https://github.com/Apress/lo
 
 Besides these original idea, this project turned into an opportunity to learn more about git, makefile, GNU GDB, GNU GCC and OS principles.
 
+## Table of Contents
+1. [Environment](#environment)
+2. [Usage](#usage)
+3. [License](#license)
+
 ## Environment
 
 ### Operating System
