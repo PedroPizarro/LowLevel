@@ -31,7 +31,7 @@ Besides these original idea, this project turned into an opportunity to learn mo
 
 ### Makefile  
 #### 1. Assembly
-In the `AssemblyFiles` directory:
+In the `assemblyfiles` directory:
 - Compile all the `.asm` files and create the `bin/` and `build/` directories.
 ```bash     
     make -s
@@ -54,31 +54,13 @@ The `-s` flag hides the commands that are executed.
 
 ---
 #### 2. C language
-In the `CFiles` directory:
+In the `cfiles` directory:
 
 
 ### GNU GDB
 
 All the layout and initial configuration is done by the commands written in `~/.gdbinit` and `./gdbinit`.  
-Besides that, the basic commands are:
-- Load file to debug it
-```gdb
-    gdb file_name
-```
-- Create a break point
-```gdb
-    break #or b address_or_function_name
-```  
-- Next instruction without diving into function calls
-```gdb
-    next #or n
-```  
-- Nex instruction diving into function calls
-```gdb
-    step #or s
-```
-
-Other useful commands can be found in [GNU GDB documentation](https://www.gnu.org/software/gdb/documentation/).
+Besides that, all the commands can be found in [GNU GDB documentation](https://www.gnu.org/software/gdb/documentation/).
 
 
 ## License 
