@@ -4,7 +4,7 @@
 # make                compile all .asm files to ./bin directory
 # make clean          remove all possible* objects in . and all executable files in ./bin
 # make gdb            setup all the files and commands for debugging with gdb
-# * as make - by default - remove intermidiate files. See Chained Rules in make documentation.
+#-s: * as make - by default - remove intermidiate files. See Chained Rules in make documentation.
 
 #
 # Variables 
@@ -14,7 +14,7 @@
 AS = nasm
 ASFLAGS = -f elf64 -gdwarf 
 # -f select "elf64" output format
-# -gdarf generate debugging information in "dwarf" dormat
+# -gdarf generate  debugging information in "dwarf" format
 
 # linker variable
 LD = ld
