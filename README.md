@@ -59,7 +59,7 @@ In the `cfiles` directory:
 
 ### GNU GDB
 
-All the layout and initial configuration is done by the commands written in `~/.gdbinit` and `./gdbinit`.  
+All the layout and initial configuration is done by the commands written in `~/.gdbinit` and `assemblyfiles/bin/.gdbinit`.  
 Besides that, all the commands can be found in [GNU GDB documentation](https://www.gnu.org/software/gdb/documentation/).
 
 
