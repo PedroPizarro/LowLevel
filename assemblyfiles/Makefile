@@ -62,7 +62,7 @@ gdb: $(BINS_DIR)/.gdbinit
 $(BINS_DIR)/.gdbinit: ~/.gdbinit
 	@touch $(BINS_DIR)/.gdbinit
 	@echo "set disassembly-flavor intel" >> $@
-	@echo "dir /data/Livros/FirmwareBook/AssemblyFiles/$(SRC_DIR)" >> $@
+	@echo "dir $(PWD)/$(SRC_DIR)" >> $@
 	@echo "b _start" >> $@
 	@echo "start" >> $@
 	@echo "layout asm" >> $@
