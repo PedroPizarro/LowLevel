@@ -81,6 +81,8 @@ mov rdi, rax
 call print_string
 mov rdi, rax
 call print_uint
+mov rdi, 10 
+call print_char
 
 xor rdi, rdi
 mov rax, 60
