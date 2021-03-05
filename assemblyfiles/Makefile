@@ -15,7 +15,7 @@ AS = nasm
 ASFLAGS = -f elf64 -gdwarf -w+all
 # -f: select "elf64" output format
 # -gdarf: generate  debugging information in "dwarf" format
-# -w+all: enables all avaible warnings
+# -w+all: enables all available warnings
 
 # linker variable
 LD = ld
