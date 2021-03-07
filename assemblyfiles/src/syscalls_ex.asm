@@ -60,7 +60,7 @@ print_uint:
 	ret
 
 _start:
-; open syscal
+; open syscal           ; open a file 
 mov rax, 2 		 
 mov rdi, fname		; pointer to file location
 mov rsi, OPN_RONLY	; flags about file permission
@@ -76,7 +76,10 @@ mov r10, MAP_PRIVATE	; pages will not be shared between processes
 mov rdx, PROT_READ
 mov r9, 0               ; 0 offset
 syscall			; rax points to mapped location
+                        ; with the file opened and mapped into a virtual memory 
+                        ; location, we can operate it. 
 
+; print file content and its size 
 mov rdi, rax
 call print_string
 mov rdi, rax
