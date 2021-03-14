@@ -113,12 +113,12 @@ print_char:
 
 _start:
 ; integer input from stdin: read syscall
-push 0
+push 0x0          ;to not overwrite a stack cell
 xor rax, rax
 xor rdi, rdi
 mov rsi, rsp    ;where the int will be saved 
-mov rdx, 10     ;maximum uint possible
-syscall		;return in rax the number of bytes successfully read
+mov rdx, 10     ;maximum number of char of the max  uint possible
+syscall		; return in rax the number of bytes successfully read
 
 ; there is the need to parse the ASCII char bytes in stack to one uint value
 mov rdi, rsi
